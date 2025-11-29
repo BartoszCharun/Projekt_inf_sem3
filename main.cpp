@@ -28,9 +28,9 @@ int main()
             if (currentState == GameState::Menu) {
                 menu.handleEvent(event);
 
-                // Enter w menu
+                
                 if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
-                    if (menu.getSelectedItem() == 0) { // Nowa gra
+                    if (menu.getSelectedItem() == 0) { 
                         game.reset();
                         currentState = GameState::Playing;
                     } else if (menu.getSelectedItem() == 1) { // Wczytaj gre
@@ -43,7 +43,7 @@ int main()
                     }
                 }
             } else if (currentState == GameState::Playing) {
-                // ESC kończy grę
+                // ESC
                 if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
                     currentState = GameState::Menu;
                 else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
