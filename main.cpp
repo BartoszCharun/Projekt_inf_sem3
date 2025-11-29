@@ -1,95 +1,72 @@
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include "paddle.h"
-#include "ball.h"
-#include "brick.h"
+#include "Menu.h"
+#include "Game.h"
+#include "gamestate.h"
+#include <iostream>
 
 
-bool checkCollision(const sf::FloatRect &a, const sf::FloatRect &b) {
-    return (a.position.x < b.position.x + b.size.x &&
-            a.position.x + a.size.x > b.position.x &&
-            a.position.y < b.position.y + b.size.y &&
-            a.position.y + a.size.y > b.position.y);
-}
+enum class GameState { Menu, Playing, Exiting };
 
-int main() {
-    const int szerokoscOkna = 800;
-    const int wysokoscOkna = 600;
-    sf::RenderWindow window(sf::VideoMode({szerokoscOkna, wysokoscOkna}), "Breakout");
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Arkanoid");
     window.setFramerateLimit(60);
 
-    Paletka paletka(szerokoscOkna / 2.f - 50.f, wysokoscOkna - 40.f);
-    Pilka pilka(szerokoscOkna / 2.f, wysokoscOkna / 2.f);
+    Menu menu(window.getSize().x, window.getSize().y);
+    Game game;
 
-    std::vector<Brick> bloki;
-    const int kolumny = 10, wiersze = 5;
-    float rozmiarX = (szerokoscOkna / kolumny) - 5.f;
-    float rozmiarY = 25.f;
+    GameState currentState = GameState::Menu;
 
-    for(int i = 0; i < wiersze; i++)
-        for(int j = 0; j < kolumny; j++) {
-            float x = j * (rozmiarX + 5.f) + 2.5f;
-            float y = i * (rozmiarY + 5.f) + 50.f;
-            int zycie = (i == 0 ? 4 : (i < 3 ? 3 : (i == 3 ? 2 : 1)));
-            bloki.emplace_back(sf::Vector2f(x, y), sf::Vector2f(rozmiarX, rozmiarY), zycie);
-        }
-
-    bool przegrana = false;
+    sf::Clock clock;
 
     while (window.isOpen()) {
-        while (auto event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>())
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
                 window.close();
-        }
-    
 
+            if (currentState == GameState::Menu) {
+                menu.handleEvent(event);
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) paletka.moveLeft();
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) paletka.moveRight();
-        if(przegrana && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R)) {
-            przegrana = false;
-            pilka.setPosition(szerokoscOkna / 2.f, wysokoscOkna / 2.f);
-        }
-
-        paletka.update();
-        pilka.update();
-
-        auto ballBounds = pilka.getBounds();
-
-        // Odb sc
-        if(ballBounds.position.x <= 0 || ballBounds.position.x + ballBounds.size.x >= szerokoscOkna)
-            pilka.bounceHorizontally();
-
-        if(ballBounds.position.y <= 0)
-            pilka.bounceVertically();
-
-        // Odb pal
-        if(checkCollision(ballBounds, paletka.getBounds()))
-            pilka.bounceVertically();
-
-        // Odb blok
-        for(auto &blok : bloki) {
-            if(blok.isDestroyed()) continue;
-            if(checkCollision(ballBounds, blok.getBounds())) {
-                blok.trafienie();
-                blok.aktualizujkolor();
-                pilka.bounceVertically();
+                // Enter w menu
+                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+                    if (menu.getSelectedItem() == 0) { // Nowa gra
+                        game.reset();
+                        currentState = GameState::Playing;
+                    } else if (menu.getSelectedItem() == 1) { // Wczytaj gre
+                        if (game.loadState("savedgame.txt"))
+                            currentState = GameState::Playing;
+                        else
+                            std::cout << "Brak zapisu gry lub uszkodzony plik." << std::endl;
+                    } else if (menu.getSelectedItem() == 2) { // Wyjście
+                        window.close();
+                    }
+                }
+            } else if (currentState == GameState::Playing) {
+                // ESC kończy grę
+                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+                    currentState = GameState::Menu;
+                else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
+                    game.saveState("savedgame.txt");
             }
         }
 
+        sf::Time dt = clock.restart();
 
-        if(ballBounds.position.y + ballBounds.size.y >= wysokoscOkna)
-            przegrana = true;
+        // update
+        if (currentState == GameState::Playing)
+            game.update(dt);
+        else if (currentState == GameState::Menu)
+            menu.update(dt);
 
-        if(przegrana)
-            pilka.setPosition(szerokoscOkna / 2.f, wysokoscOkna / 2.f);
+        // render
+        window.clear(sf::Color::Black);
 
-      
-        window.clear(sf::Color::White);
-        paletka.draw(window);
-        pilka.draw(window);
-        for(auto &blok : bloki)
-            blok.draw(window); 
+        if (currentState == GameState::Menu)
+            menu.draw(window);
+        else if (currentState == GameState::Playing)
+            game.render(window);
+
         window.display();
     }
 
