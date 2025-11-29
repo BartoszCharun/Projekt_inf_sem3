@@ -1,15 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class Pilka {
+class pilka {
 private:
     sf::CircleShape shape;
     sf::Vector2f velocity = {6.f, -6.f};
 
 public:
-    Pilka(float x, float y) {
+    pilka(float x, float y) {
         shape.setRadius(10.f);
-        shape.setFillColor(sf::Color(46, 139, 87));
+        shape.setFillColor(sf::Color(241, 196, 15));
         shape.setPosition(sf::Vector2f(x, y));
     }
 
@@ -17,9 +17,10 @@ public:
         shape.move(velocity);
     }
 
-    void draw(sf::RenderWindow& window) {
-        window.draw(shape);
+    void draw(sf::RenderTarget& target) {
+        target.draw(shape);
     }
+        
 
     void bounceHorizontally() {
          velocity.x = -velocity.x;
@@ -34,6 +35,20 @@ public:
     
 
     sf::FloatRect getBounds() const { return shape.getGlobalBounds(); }
+    sf::Vector2f getPosition() const {
+        return shape.getPosition();
+    }
+    sf::Vector2f getVelocity() const {
+        return velocity;
+    }
+    void setVelocity(const sf::Vector2f& newVelocity) {
+        velocity = newVelocity;
+    }
+    void scaleVelocity(float factor) {
+        velocity.x *= factor;
+        velocity.y *= factor;
+    }
+    
 
     void setPosition(float x, float y) { shape.setPosition(sf::Vector2f(x, y)); }
 };
