@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+#include "Game.h"
+
+int main()
+{
+    Game game;
+    return game.run();
+=======
 #include <SFML/Graphics.hpp>
 #include "Menu.h"
 #include "Game.h"
@@ -71,4 +79,5 @@ int main()
     }
 
     return 0;
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 }

@@ -4,15 +4,34 @@
 class paletka {
 private:
     sf::RectangleShape shape;
+<<<<<<< HEAD
+    float speed = 8.f;
+=======
     float speed = 6.f;
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 
 public:
     paletka(float x, float y) {
         shape.setSize({100.f, 20.f});
+<<<<<<< HEAD
+        shape.setFillColor(sf::Color(52, 152, 219));
+        shape.setPosition(sf::Vector2f(x, y));
+    }
+
+    void setSpeed(float newSpeed) {
+        speed = newSpeed;
+    }
+
+    float getSpeed() const {
+        return speed;
+    }
+
+=======
         shape.setFillColor(sf::Color(229, 127, 61));
         shape.setPosition(sf::Vector2f(x, y));
     }
 
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
     void setPosition(float x, float y) {
         shape.setPosition(sf::Vector2f(x, y));
     }

@@ -41,7 +41,10 @@ public:
 
     void setState(const sf::Vector2f& pos, int hp, bool destroyed) {
         shape.setPosition(pos);
+<<<<<<< HEAD
+=======
         // Odtwarzamy stan z zapisu, ale pilnujemy limitów
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
         zycie = std::max(0, std::min(maxHP, hp));
         zniszczony = destroyed || zycie <= 0;
         if (!zniszczony)

@@ -3,6 +3,15 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+<<<<<<< HEAD
+#include <fstream>
+#include <algorithm>
+
+namespace {
+const char* SCORE_FILE = "scores.txt";
+}
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 
 Menu::Menu(float width, float height)
 {
@@ -42,11 +51,19 @@ Menu::Menu(float width, float height)
         starVel.push_back({vx, vy});
     }
 
+<<<<<<< HEAD
+    panel.setSize(sf::Vector2f(width * 0.6f, height * 0.62f));
+    panel.setFillColor(sf::Color(20, 25, 40, 200));
+    panel.setOutlineThickness(2.f);
+    panel.setOutlineColor(sf::Color(80, 150, 255, 180));
+    panel.setPosition(width * 0.2f, height * 0.30f);
+=======
     panel.setSize(sf::Vector2f(width * 0.6f, height * 0.5f));
     panel.setFillColor(sf::Color(20, 25, 40, 200));
     panel.setOutlineThickness(2.f);
     panel.setOutlineColor(sf::Color(80, 150, 255, 180));
     panel.setPosition(width * 0.2f, height * 0.35f);
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 
     title.setFont(font);
     title.setString("ARKANOID");
@@ -54,11 +71,19 @@ Menu::Menu(float width, float height)
     title.setFillColor(sf::Color(120, 190, 255));
     auto bounds = title.getLocalBounds();
     title.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+<<<<<<< HEAD
+    title.setPosition(width / 2.f, height * 0.14f);
+=======
     title.setPosition(width / 2.f, height * 0.18f);
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 
     std::vector<std::string> labels = {
         "Nowa gra",
         "Wczytaj gre",
+<<<<<<< HEAD
+        "Tabela wynikow",
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
         "Wyjscie"
     };
 
@@ -71,10 +96,19 @@ Menu::Menu(float width, float height)
 
         auto b = text.getLocalBounds();
         text.setOrigin(b.width / 2.f, b.height / 2.f);
+<<<<<<< HEAD
+        text.setPosition(width / 2.f, height * 0.45f + i * 65.f);
+
+        items.push_back(text);
+    }
+
+    refreshScores();
+=======
         text.setPosition(width / 2.f, height / 2.f + i * 70.f);
 
         items.push_back(text);
     }
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 }
 
 void Menu::update(sf::Time dt)
@@ -101,12 +135,30 @@ void Menu::draw(sf::RenderTarget& target)
 {
     for (auto& star : stars)
         target.draw(star);
+<<<<<<< HEAD
+        target.draw(panel);
+        target.draw(title);
+=======
     target.draw(panel);
     target.draw(title);
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
     for (auto& item : items)
         target.draw(item);
 }
 
+<<<<<<< HEAD
+void Menu::drawScores(sf::RenderTarget& target)
+{
+    for (auto& star : stars)
+        target.draw(star);
+        target.draw(panel);
+        target.draw(scoreTitle);
+    for (auto& line : scoreTexts)
+        target.draw(line);
+}
+
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 void Menu::handleEvent(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
@@ -124,3 +176,59 @@ void Menu::handleEvent(const sf::Event& event)
             items[i].setFillColor(i == selectedIndex ? sf::Color(120, 190, 255) : sf::Color(230, 230, 235));
     }
 }
+<<<<<<< HEAD
+
+void Menu::loadScores()
+{
+    scores.clear();
+    std::ifstream file(SCORE_FILE);
+    if (!file.is_open()) return;
+
+    int v = 0;
+    while (file >> v) scores.push_back(v);
+    std::sort(scores.begin(), scores.end(), std::greater<int>());
+    if (scores.size() > 5) scores.resize(5);
+}
+
+void Menu::updateScoreTexts()
+{
+    scoreTexts.clear();
+    auto b = scoreTitle.getLocalBounds();
+    scoreTitle.setOrigin(b.width / 2.f, b.height / 2.f);
+    scoreTitle.setPosition(viewWidth / 2.f, viewHeight * 0.36f);
+
+    float startY = viewHeight * 0.48f;
+    float step = 42.f;
+    if (scores.empty()) {
+        sf::Text line;
+        line.setFont(font);
+        line.setCharacterSize(28);
+        line.setFillColor(sf::Color(230, 230, 235));
+        line.setString("Brak wynikow");
+        auto lb = line.getLocalBounds();
+        line.setOrigin(lb.width / 2.f, lb.height / 2.f);
+        line.setPosition(viewWidth / 2.f, startY);
+        scoreTexts.push_back(line);
+        return;
+    }
+
+    for (size_t i = 0; i < scores.size(); ++i) {
+        sf::Text line;
+        line.setFont(font);
+        line.setCharacterSize(28);
+        line.setFillColor(sf::Color(230, 230, 235));
+        line.setString(std::to_string(i + 1) + ". " + std::to_string(scores[i]) + " odbic");
+        auto lb = line.getLocalBounds();
+        line.setOrigin(lb.width / 2.f, lb.height / 2.f);
+        line.setPosition(viewWidth / 2.f, startY + step * static_cast<float>(i));
+        scoreTexts.push_back(line);
+    }
+}
+
+void Menu::refreshScores()
+{
+    loadScores();
+    updateScoreTexts();
+}
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
