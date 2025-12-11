@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
+<<<<<<< HEAD
 #include "Menu.h"
 #include <cstdlib>
 #include <ctime>
@@ -12,6 +13,11 @@
 namespace {
 const char* SCORE_FILE = "scores.txt";
 }
+=======
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 
 
 Game::Game()
@@ -47,11 +53,14 @@ Game::Game()
     tekstOdbicia.setFillColor(sf::Color::White);
     tekstOdbicia.setPosition(10.f, 10.f);
 
+<<<<<<< HEAD
     tekstTabela.setFont(font);
     tekstTabela.setCharacterSize(22);
     tekstTabela.setFillColor(sf::Color(200, 220, 255));
     loadScores();
     updateScoreText();
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
  
     static bool seeded = false;
     if (!seeded) { std::srand(static_cast<unsigned>(std::time(nullptr))); seeded = true; }
@@ -61,7 +70,11 @@ Game::Game()
     for (int i = 0; i < starCount; ++i) {
         float x = static_cast<float>(std::rand() % 800);
         float y = static_cast<float>(std::rand() % 600);
+<<<<<<< HEAD
         float r = static_cast<float>(1.f + std::rand() % 4) * 0.3f; // 1.0 - 2.2
+=======
+        float r = 1.f + static_cast<float>(std::rand() % 4) * 0.3f; // 1.0 - 2.2
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
         sf::CircleShape star(r);
         star.setFillColor(sf::Color(200, 220, 255, 200));
         star.setPosition(x, y);
@@ -70,6 +83,7 @@ Game::Game()
         float vy = (static_cast<float>(std::rand() % 11) - 5.f) * 0.03f;
         m_gwiazdkiVel.push_back({vx, vy});
     }
+<<<<<<< HEAD
 }
 
 int Game::run()
@@ -145,6 +159,10 @@ int Game::run()
 
     return 0;
 }
+=======
+    }
+
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 
 
 void Game::update(sf::Time dt)
@@ -173,6 +191,7 @@ void Game::update(sf::Time dt)
         if(ballBounds.top <= 0.f)
             ball.bounceVertically();
 
+<<<<<<< HEAD
         // odbicie od paletki (również boki)
         const auto paddleBounds = m_paletka.getBounds();
         if(ballBounds.intersects(paddleBounds)){
@@ -196,6 +215,11 @@ void Game::update(sf::Time dt)
                 ball.setPosition(ballBounds.left, ballBounds.top + adjust);
             }
             ballBounds = ball.getBounds();
+=======
+        // odbicie od paletki
+        if(ballBounds.intersects(m_paletka.getBounds())){
+            ball.bounceVertically();
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
             licznik_odbic++;
         }
 
@@ -212,7 +236,10 @@ void Game::update(sf::Time dt)
         if(ballBounds.top + ballBounds.height >= 600) {
             przegrana = true;
             ball.setVelocity({0.f, 0.f});
+<<<<<<< HEAD
             recordScore();
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
         }
     };
 
@@ -264,7 +291,10 @@ void Game::reset()
 {
     przegrana = false;
     bonusApplied = false;
+<<<<<<< HEAD
     scoreRecorded = false;
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
     licznik_odbic = 0;
     m_pilka.setPosition(400.f, 300.f);
     m_pilka.setVelocity({6.f, -6.f});
@@ -289,7 +319,10 @@ bool Game::loadState(const std::string& filename)
     bool loaded = Gamestate::loadFromFile(filename, m_paletka, m_pilka, m_bloki, hasSecondBall, pos2, vel2);
     if (loaded) {
         przegrana = false;
+<<<<<<< HEAD
         scoreRecorded = false;
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
         licznik_odbic = 0;
         tekstOdbicia.setString("Odbicia: 0");
         bonusApplied = hasSecondBall;
@@ -303,7 +336,15 @@ void Game::applyBonusIfNeeded()
 {
     if (bonusApplied || licznik_odbic < 5) return;
     bonusApplied = true;
+<<<<<<< HEAD
     m_paletka.setSpeed(m_paletka.getSpeed() * 1.2f);
+=======
+
+
+    m_paletka.setSpeed(m_paletka.getSpeed() * 1.2f);
+
+
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
     auto slowDown = [](pilka& b) {
         b.scaleVelocity(0.7f);
     };
@@ -332,6 +373,7 @@ void Game::restoreSecondBall(bool hasSecond, const sf::Vector2f& pos, const sf::
     m_pilka2 = std::make_unique<pilka>(pos.x, pos.y);
     m_pilka2->setVelocity(vel);
 }
+<<<<<<< HEAD
 
 void Game::loadScores()
 {
@@ -383,3 +425,5 @@ void Game::recordScore()
     saveScores();
     updateScoreText();
 }
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba

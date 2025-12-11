@@ -13,25 +13,37 @@ private:
     int selectedIndex = 0;
     sf::Text title;
     sf::RectangleShape panel;
+<<<<<<< HEAD
     std::vector<int> scores;
     sf::Text scoreTitle;
     std::vector<sf::Text> scoreTexts;
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
     float animTimer = 0.f;
     std::vector<sf::ConvexShape> stars;
     std::vector<sf::Vector2f> starVel;
     float viewWidth = 0.f;
     float viewHeight = 0.f;
+<<<<<<< HEAD
     void loadScores();
     void updateScoreTexts();
+=======
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 
 public:
     Menu(float width, float height);
 
     void update(sf::Time dt);
     void draw(sf::RenderTarget& target);
+<<<<<<< HEAD
     void drawScores(sf::RenderTarget& target);
     void handleEvent(const sf::Event& event);
 
     int getSelectedItem() const { return selectedIndex; }
     void refreshScores();
+=======
+    void handleEvent(const sf::Event& event);
+
+    int getSelectedItem() const { return selectedIndex; }
+>>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
 };
