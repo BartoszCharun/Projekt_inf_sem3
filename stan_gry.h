@@ -2,9 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "brick.h"
-#include "paddle.h"
-#include "ball.h"
+#include "blok.h"
+#include "paletka.h"
+#include "pilka.h"
 
 class Gamestate {
 private:

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include "Game.h"
 
 int main()
@@ -14,14 +15,14 @@ int main()
 
 
 enum class GameState { Menu, Playing, Exiting };
+=======
+#include "gra.h"
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Arkanoid");
-    window.setFramerateLimit(60);
-
-    Menu menu(window.getSize().x, window.getSize().y);
     Game game;
+<<<<<<< HEAD
 
     GameState currentState = GameState::Menu;
 
@@ -80,4 +81,7 @@ int main()
 
     return 0;
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+    return game.run();
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 }

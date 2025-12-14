@@ -1,4 +1,4 @@
-#include "gamestate.h"
+#include "stan_gry.h"
 #include <fstream>
 
 Gamestate::Gamestate(const paletka& paddle,

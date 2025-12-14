@@ -4,14 +4,20 @@
 #include <ctime>
 #include <cmath>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 #include <fstream>
 #include <algorithm>
 
 namespace {
 const char* SCORE_FILE = "scores.txt";
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 
 Menu::Menu(float width, float height)
 {
@@ -23,15 +29,9 @@ Menu::Menu(float width, float height)
     }
 
 
-    static bool seeded = false;
-    if (!seeded) { std::srand(static_cast<unsigned>(std::time(nullptr))); seeded = true; }
-    const int starCount = 20;
-    stars.reserve(starCount);
-    starVel.reserve(starCount);
-    for (int i = 0; i < starCount; ++i) {
-        float x = static_cast<float>(std::rand() % static_cast<int>(width));
-        float y = static_cast<float>(std::rand() % static_cast<int>(height));
+    starfield.init(20, width, height);
 
+<<<<<<< HEAD
     
         float outerR = 3.4f + static_cast<float>(std::rand() % 5) * 1.45f; // ~2.4 - 4.2
         float innerR = outerR * 0.5f;
@@ -64,6 +64,13 @@ Menu::Menu(float width, float height)
     panel.setOutlineColor(sf::Color(80, 150, 255, 180));
     panel.setPosition(width * 0.2f, height * 0.35f);
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+    panel.setSize(sf::Vector2f(width * 0.6f, height * 0.62f));
+    panel.setFillColor(sf::Color(20, 25, 40, 200));
+    panel.setOutlineThickness(2.f);
+    panel.setOutlineColor(sf::Color(80, 150, 255, 180));
+    panel.setPosition(width * 0.2f, height * 0.30f);
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 
     title.setFont(font);
     title.setString("ARKANOID");
@@ -72,18 +79,26 @@ Menu::Menu(float width, float height)
     auto bounds = title.getLocalBounds();
     title.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 <<<<<<< HEAD
+<<<<<<< HEAD
     title.setPosition(width / 2.f, height * 0.14f);
 =======
     title.setPosition(width / 2.f, height * 0.18f);
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+    title.setPosition(width / 2.f, height * 0.14f);
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 
     std::vector<std::string> labels = {
         "Nowa gra",
         "Wczytaj gre",
 <<<<<<< HEAD
+<<<<<<< HEAD
         "Tabela wynikow",
 =======
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+        "Tabela wynikow",
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
         "Wyjscie"
     };
 
@@ -97,6 +112,7 @@ Menu::Menu(float width, float height)
         auto b = text.getLocalBounds();
         text.setOrigin(b.width / 2.f, b.height / 2.f);
 <<<<<<< HEAD
+<<<<<<< HEAD
         text.setPosition(width / 2.f, height * 0.45f + i * 65.f);
 
         items.push_back(text);
@@ -109,6 +125,14 @@ Menu::Menu(float width, float height)
         items.push_back(text);
     }
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+        text.setPosition(width / 2.f, height * 0.45f + i * 65.f);
+
+        items.push_back(text);
+    }
+
+    refreshScores();
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 }
 
 void Menu::update(sf::Time dt)
@@ -117,28 +141,21 @@ void Menu::update(sf::Time dt)
     float scale = 1.f + 0.04f * std::sin(animTimer * 2.5f);
     title.setScale(scale, scale);
 
-    for (size_t i = 0; i < stars.size(); ++i) {
-        stars[i].move(starVel[i]);
-        auto pos = stars[i].getPosition();
-        auto bounds = stars[i].getGlobalBounds();
-        float halfW = bounds.width * 0.5f;
-        float halfH = bounds.height * 0.5f;
-        if (pos.x < -halfW) pos.x = viewWidth;
-        if (pos.x > viewWidth + halfW) pos.x = -halfW;
-        if (pos.y < -halfH) pos.y = viewHeight;
-        if (pos.y > viewHeight + halfH) pos.y = -halfH;
-        stars[i].setPosition(pos);
-    }
+    starfield.update();
 }
 
 void Menu::draw(sf::RenderTarget& target)
 {
+<<<<<<< HEAD
     for (auto& star : stars)
         target.draw(star);
 <<<<<<< HEAD
         target.draw(panel);
         target.draw(title);
 =======
+=======
+    starfield.draw(target);
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
     target.draw(panel);
     target.draw(title);
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
@@ -147,18 +164,29 @@ void Menu::draw(sf::RenderTarget& target)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void Menu::drawScores(sf::RenderTarget& target)
 {
     for (auto& star : stars)
         target.draw(star);
         target.draw(panel);
         target.draw(scoreTitle);
+=======
+void Menu::drawScores(sf::RenderTarget& target)
+{
+    starfield.draw(target);
+    target.draw(panel);
+    target.draw(scoreTitle);
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
     for (auto& line : scoreTexts)
         target.draw(line);
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 void Menu::handleEvent(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
@@ -177,6 +205,9 @@ void Menu::handleEvent(const sf::Event& event)
     }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
 
 void Menu::loadScores()
 {
@@ -230,5 +261,8 @@ void Menu::refreshScores()
     loadScores();
     updateScoreTexts();
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 62e84fae8dc45d5e8d4eb90a1818b6b6ab4340ba
+=======
+>>>>>>> d1fffdb418111654297beb545fc433367a96616c
