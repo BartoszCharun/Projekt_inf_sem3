@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "gra.h"
 #include "Menu.h"
+#include "Napisy.h"
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -10,7 +11,6 @@
 #include <iostream>
 
 namespace {
-const char* SCORE_FILE = "scores.txt";
 const float GAME_WIDTH = 800.f;
 const float GAME_HEIGHT = 600.f;
 }
@@ -21,12 +21,12 @@ Game::Game()
 {
     m_bloki.generateDefault(GAME_WIDTH);
 
-    if (!font.loadFromFile("Arimo-Regular.ttf")) {
+    if (!font.loadFromFile(Napisy::Pliki::font())) {
     
     }
 
     tekstPrzegrana.setFont(font);
-    tekstPrzegrana.setString("Game over! Nacisnij R aby zrestartowac");
+    tekstPrzegrana.setString(Napisy::Gra::gameOver());
     tekstPrzegrana.setCharacterSize(30);
     tekstPrzegrana.setFillColor(sf::Color::White);
     auto przegranaBounds = tekstPrzegrana.getLocalBounds();
@@ -50,7 +50,7 @@ Game::Game()
 int Game::run()
 {
     sf::RenderWindow window(sf::VideoMode(static_cast<unsigned int>(GAME_WIDTH),
-                                          static_cast<unsigned int>(GAME_HEIGHT)), "Arkanoid");
+                                          static_cast<unsigned int>(GAME_HEIGHT)), Napisy::Gra::windowTitle());
     window.setFramerateLimit(60);
 
     Menu menu(window.getSize().x, window.getSize().y);
@@ -76,10 +76,10 @@ int Game::run()
                         reset();
                         currentState = State::Playing;
                     } else if (menu.getSelectedItem() == 1) { // Wczytaj gre
-                        if (loadState("savedgame.txt"))
+                        if (loadState(Napisy::Pliki::save()))
                             currentState = State::Playing;
                         else
-                            std::cout << "Brak zapisu gry lub uszkodzony plik." << std::endl;
+                            std::cout << Napisy::Gra::loadSaveError() << std::endl;
                     } else if (menu.getSelectedItem() == 2) { // Tabela wynikow
                         menu.refreshScores();
                         currentState = State::Scores;
@@ -91,7 +91,7 @@ int Game::run()
                 if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
                     currentState = State::Menu;
                 else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
-                    saveState("savedgame.txt");
+                    saveState(Napisy::Pliki::save());
             } else if (currentState == State::Scores) {
                 if (event.type == sf::Event::KeyPressed &&
                     (event.key.code == sf::Keyboard::Escape || event.key.code == sf::Keyboard::Enter)) {
@@ -163,7 +163,7 @@ void Game::update(sf::Time dt)
 
     applyBonusIfNeeded();
         
-    tekstOdbicia.setString("Odbicia: " + std::to_string(licznik_odbic));
+    tekstOdbicia.setString(Napisy::Gra::hitsLabel(licznik_odbic));
     float scale = 1.f + 0.05f * std::sin(m_animTimer * 3.f);
     tekstOdbicia.setScale(scale, scale);
 
@@ -217,7 +217,7 @@ bool Game::loadState(const std::string& filename)
         przegrana = false;
         scoreRecorded = false;
         licznik_odbic = 0;
-        tekstOdbicia.setString("Odbicia: 0");
+        tekstOdbicia.setString(Napisy::Gra::hitsLabel(0));
         bonusApplied = hasSecondBall;
         m_paletka.setSpeed(basePaddleSpeed * (hasSecondBall ? 1.2f : 1.f));
         restoreSecondBall(hasSecondBall, pos2, vel2);
@@ -262,7 +262,7 @@ void Game::restoreSecondBall(bool hasSecond, const sf::Vector2f& pos, const sf::
 void Game::loadScores()
 {
     m_scores.clear();
-    std::ifstream file(SCORE_FILE);
+    std::ifstream file(Napisy::Pliki::score());
     if (!file.is_open()) return;
 
     int value = 0;
@@ -275,7 +275,7 @@ void Game::loadScores()
 
 void Game::saveScores() const
 {
-    std::ofstream file(SCORE_FILE);
+    std::ofstream file(Napisy::Pliki::score());
     if (!file.is_open()) return;
 
     size_t limit = std::min<size_t>(5, m_scores.size());
@@ -285,12 +285,12 @@ void Game::saveScores() const
 
 void Game::updateScoreText()
 {
-    std::string text = "Tabela wynikow\n";
+    std::string text = std::string(Napisy::Menu::scoresTitle()) + "\n";
     if (m_scores.empty()) {
-        text += "-\n";
+        text += std::string(Napisy::Gra::emptyScorePlaceholder()) + "\n";
     } else {
         for (size_t i = 0; i < m_scores.size() && i < 5; ++i) {
-            text += std::to_string(i + 1) + ". " + std::to_string(m_scores[i]) + " odbic\n";
+            text += Napisy::Gra::scoreEntry(static_cast<int>(i + 1), m_scores[i]) + "\n";
         }
     }
     tekstTabela.setString(text);
