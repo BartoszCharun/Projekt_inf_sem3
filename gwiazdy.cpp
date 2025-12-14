@@ -53,3 +53,18 @@ void Starfield::draw(sf::RenderTarget& target) const
     for (const auto& star : stars)
         target.draw(star);
 }
+
+StarryMenuBackground::StarryMenuBackground(float width, float height, int count)
+{
+    starfield.init(count, width, height);
+}
+
+void StarryMenuBackground::update()
+{
+    starfield.update();
+}
+
+void StarryMenuBackground::draw(sf::RenderTarget& target) const
+{
+    starfield.draw(target);
+}

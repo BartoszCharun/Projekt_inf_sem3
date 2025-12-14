@@ -22,25 +22,10 @@ Game::Game()
     m_bloki.generateDefault(GAME_WIDTH);
 
     if (!font.loadFromFile(Napisy::Pliki::font())) {
-    
+
     }
 
-    tekstPrzegrana.setFont(font);
-    tekstPrzegrana.setString(Napisy::Gra::gameOver());
-    tekstPrzegrana.setCharacterSize(30);
-    tekstPrzegrana.setFillColor(sf::Color::White);
-    auto przegranaBounds = tekstPrzegrana.getLocalBounds();
-    tekstPrzegrana.setOrigin(przegranaBounds.width / 2.f, przegranaBounds.height / 2.f);
-    tekstPrzegrana.setPosition(GAME_WIDTH / 2.f, GAME_HEIGHT / 2.f - 20.f);
-
-    tekstOdbicia.setFont(font);
-    tekstOdbicia.setCharacterSize(20);
-    tekstOdbicia.setFillColor(sf::Color::White);
-    tekstOdbicia.setPosition(10.f, 10.f);
-
-    tekstTabela.setFont(font);
-    tekstTabela.setCharacterSize(22);
-    tekstTabela.setFillColor(sf::Color(200, 220, 255));
+    Napisy::Gra::initTexts(font, tekstPrzegrana, tekstOdbicia, tekstTabela, GAME_WIDTH, GAME_HEIGHT);
     loadScores();
     updateScoreText();
  

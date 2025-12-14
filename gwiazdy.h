@@ -18,3 +18,13 @@ public:
     void update();
     void draw(sf::RenderTarget& target) const;
 };
+
+class StarryMenuBackground {
+private:
+    Starfield starfield;
+
+public:
+    StarryMenuBackground(float width, float height, int count);
+    void update();
+    void draw(sf::RenderTarget& target) const;
+};

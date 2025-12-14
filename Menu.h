@@ -18,7 +18,7 @@ private:
     sf::Text scoreTitle;
     std::vector<sf::Text> scoreTexts;
     float animTimer = 0.f;
-    Starfield starfield;
+    StarryMenuBackground starBackground;
     float viewWidth = 0.f;
     float viewHeight = 0.f;
     void loadScores();
