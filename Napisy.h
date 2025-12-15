@@ -26,6 +26,7 @@ public:
         static std::vector<sf::Text> createMenuItems(const sf::Font& font, float width, float height);
         static std::vector<sf::Text> createScoreTexts(const sf::Font& font, const std::vector<int>& scores,
                                                       float viewWidth, float viewHeight, sf::Text& scoreTitle);
+        static float titleScale(float animTimer);
     };
 
     struct Gra {

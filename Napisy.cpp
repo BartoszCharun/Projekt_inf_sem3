@@ -1,5 +1,6 @@
 #include "Napisy.h"
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include <vector>
 
 namespace {
@@ -93,6 +94,9 @@ std::vector<sf::Text> Napisy::Menu::createScoreTexts(const sf::Font& font, const
     std::vector<sf::Text> scoreTexts;
     scoreTexts.reserve(scores.empty() ? 1 : scores.size());
 
+    scoreTitle.setFont(font);
+    scoreTitle.setCharacterSize(40);
+    scoreTitle.setFillColor(sf::Color(120, 190, 255));
     scoreTitle.setString(scoresTitle());
     auto b = scoreTitle.getLocalBounds();
     scoreTitle.setOrigin(b.width / 2.f, b.height / 2.f);
@@ -126,6 +130,11 @@ std::vector<sf::Text> Napisy::Menu::createScoreTexts(const sf::Font& font, const
     }
 
     return scoreTexts;
+}
+
+float Napisy::Menu::titleScale(float animTimer)
+{
+    return 1.f + 0.04f * std::sin(animTimer * 2.5f);
 }
 
 const char* Napisy::Gra::windowTitle()

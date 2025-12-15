@@ -19,18 +19,13 @@ Menu::Menu(float width, float height)
 
     items = Napisy::Menu::createMenuItems(font, width, height);
 
-    scoreTitle.setFont(font);
-    scoreTitle.setCharacterSize(40);
-    scoreTitle.setFillColor(sf::Color(120, 190, 255));
-    scoreTitle.setString(Napisy::Menu::scoresTitle());
-
     refreshScores();
 }
 
 void Menu::update(sf::Time dt)
 {
     animTimer += dt.asSeconds();
-    float scale = 1.f + 0.04f * std::sin(animTimer * 2.5f);
+    float scale = Napisy::Menu::titleScale(animTimer);
     title.setScale(scale, scale);
 
     starBackground.update();
